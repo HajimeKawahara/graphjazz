@@ -2,16 +2,16 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 import numpy as np
 
-def ntonic(ax,p,rcircle=0.17,rad=1.0,oncolor="black",offcolor="white",linecolor="black"):
+def ntonic(ax,bytep,rcircle=0.17,rad=1.0,oncolor="black",offcolor="white",linecolor="black"):
     """Plot N-tonic on a 12 circle
     
     Args:
        ax: axis
-       p: p-value
+       bytep: bytep-value
     
     """
     delta=np.pi/6.0
-    for i,peach in enumerate(p):
+    for i,peach in enumerate(bytep):
         theta=delta*(i-1)+np.pi/2.0
         x=rad*np.cos(theta)
         y=rad*np.sin(theta)
@@ -40,9 +40,9 @@ def set_twcircle(ax):
 
     
 if __name__=="__main__":
-    p=[0,1,1,0,1,0,0,0,0,1,0,1]
+    bytep=[0,1,1,0,1,0,0,0,0,1,0,1]
     fig=plt.figure()
     ax = plt.axes()
     set_twcircle(ax)
-    ntonic(ax,p)
+    ntonic(ax,bytep)
     plt.show()
