@@ -96,7 +96,22 @@ def qinterval(q):
         interval[mask]=x
         qx[mask]=13        
     return interval[kmask]
-            
+
+def splitindex(q):
+    """splitting index of q
+    
+    Args:
+       q: q value
+    
+    Return:
+       spliting index
+
+    """
+
+
+    qint=qinterval(q)
+    return 1/(np.sum(1/qint)/np.sum(q))
+
 def write_all_ntonic():
     ATL=all_ntonic()
     for i,itonic in enumerate(ATL):
@@ -104,11 +119,41 @@ def write_all_ntonic():
         for Q in itonic:
             q=Q2q(Q)
             qint=qinterval(q)
-            print(Q,q,qint,np.prod(qint))
+            print(Q,q,qint,splitindex(q))
+            
 if __name__=="__main__":
     print(bin(5))
     q=Q2q(285)
 #    q=np.array([0,0,1,0,0,0,1,0,0,0,1,1])
     q=np.array([0,0,0,0,1,0,1,1,1,1,0,1])
-#    print(q,qinterval(q))
-    write_all_ntonic()
+    #    print(q,qinterval(q))
+    # write_all_ntonic()
+
+    ###
+    import matplotlib.pyplot as plt
+    cl=["","","","","C0","C1","C2"]
+    ATL=all_ntonic()
+    for j in [4,5,6]:
+        sindex=[]
+        for i,itonic in enumerate(ATL[j:j+1]):
+            for Q in itonic:
+                q=Q2q(Q)
+                qint=qinterval(q)
+                print(Q,q,qint,splitindex(q))
+                sindex.append(splitindex(q))
+            sindex=np.array(sindex)
+
+        plt.hist(sindex,bins=20,color=cl[j],alpha=0.3,label=str(j)+"-tonic")
+
+    plt.text(3.0,3,"dim",rotation=90, horizontalalignment="center", color="C0")
+    plt.text(2.82,3,"m7, 6",rotation=90, horizontalalignment="center", color="C0")
+    plt.text(2.1818,3,"M7",rotation=90, horizontalalignment="center", color="C0")
+
+    plt.text(2.307,3,"major and minor pentatonics",rotation=90, horizontalalignment="center", color="C1")
+    plt.text(1.5,3,"(traditional) hexatonic",rotation=90, horizontalalignment="center", color="C2")
+    plt.text(2.0,3,"whole tone",rotation=90, horizontalalignment="center", color="C2")
+
+    plt.xlabel("splitting index")
+    plt.legend()
+    plt.savefig("split.png")
+    plt.show()
